@@ -26,12 +26,13 @@ target 'HackerNews' do
   post_install do |installer|
     react_native_post_install(installer)
 
-    # Modern clang reports Yoga's `bool | bool` as -Wbitwise-instead-of-logical,
-    # which Yoga.podspec's -Werror makes fatal. Keep it a warning (no codegen change).
+    # Modern clang reports Yoga's `bool | bool` as -Wbitwise-instead-of-logical and
+    # (Xcode 26.6+) its `operator"" _pt` spelling as -Wdeprecated-literal-operator,
+    # which Yoga.podspec's -Werror makes fatal. Keep them warnings (no codegen change).
     installer.pods_project.targets.each do |target|
       next unless target.name == 'Yoga'
       target.build_configurations.each do |config|
-        config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-error=bitwise-instead-of-logical'
+        config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-error=bitwise-instead-of-logical -Wno-error=deprecated-literal-operator'
       end
     end
 
