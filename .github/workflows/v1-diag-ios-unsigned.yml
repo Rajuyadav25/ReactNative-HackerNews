@@ -34,6 +34,17 @@ jobs:
           pod install --project-directory=ios 2>&1 | tee "$EVIDENCE/pod-install.txt"
       - name: Lock portability guard
         run: .github/v1/lock-portability-guard.sh .github/v1/ios-podfile-lock.conf "$EVIDENCE/lock-guard"
+      - name: Probe Yoga -Wno-error settings on this clang (object identity)
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'struct V { float v; };' 'inline V operator"" _pt(long double x) { return V{static_cast<float>(x)}; }' 'struct L { bool h; bool o() const { return h; } };' 'bool g(L a, L b) { return a.o() | b.o(); }' 'V f() { return 1.0_pt; }' > "$RUNNER_TEMP/probe.cpp"
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+          CXX="xcrun --sdk iphonesimulator clang++ -target arm64-apple-ios12.0-simulator -isysroot $SDK -std=c++1y -c $RUNNER_TEMP/probe.cpp"
+          { xcrun clang --version | head -1
+            echo "## -Wall -Werror"; $CXX -o "$RUNNER_TEMP/a.o" -Wall -Werror 2>&1 | grep -E 'error|warning' || true
+            echo "## with -Wno-error flags"; $CXX -o "$RUNNER_TEMP/b.o" -Wno-error=bitwise-instead-of-logical -Wno-error=deprecated-literal-operator -Wall -Werror 2>&1 | grep -E 'error|warning' || true
+            $CXX -o "$RUNNER_TEMP/c.o" -Wall 2>/dev/null
+            cmp "$RUNNER_TEMP/b.o" "$RUNNER_TEMP/c.o" && echo "objects byte-identical (with flags vs without -Werror)"; } | tee "$EVIDENCE/clang-flag-probe.txt"
       - name: Unsigned iOS Release build (Gate 1A command)
         run: |
           set +e
