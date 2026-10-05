@@ -449,7 +449,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: b2732cc8d605efaa41e4ae850b73d5cb9c1e04be
+  FBReactNativeSpec: dc49f99f269146e2cae5f83e9655ca8e46b3eed3
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: 755929a4f851b2fb2c347d533a23f191b008554c
@@ -460,16 +460,16 @@ SPEC CHECKSUMS:
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
+  RCT-Folly: 1af344185a2506dec1e584dd5edaaa8fb6bcda5e
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
   React: ef700aeb19afabff83a9cc5799ac955a9c6b5e0f
   React-callinvoker: 5547633d44f3e114b17c03c660ccb5faefd9ed2d
-  React-Core: 3858d60185d71567962468bf176d582e36e4e25b
+  React-Core: 0cebc45b3806ffad01abe3a427cbbca3fb7f29c5
   React-CoreModules: 29b3397adac0c04915cf93089328664868510717
-  React-cxxreact: 7e6cc1f4cdfcd40e483dd228fa8a3d3e0ed16f4a
-  React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
-  React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
+  React-cxxreact: 61a28af12ba19749f6d3e3a7f14d5225c3fbe4f1
+  React-jsi: a9b8de5c4e750cca487a1497421179b2cc965526
+  React-jsiexecutor: 65e1b3ff67b87ec54e09ab3d06f2474e59ef3dcf
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
@@ -482,10 +482,10 @@ SPEC CHECKSUMS:
   React-RCTText: 04a2f0a281f715f0aed4f515717fafd64510e2c8
   React-RCTVibration: c7f845861e79eae13dc1e8217a3cf47a3945b504
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
-  ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
+  ReactCommon: 5d8dd4ab7e84638392cbd5db77c10e7a412bb69a
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8aa42ae5446fd9b4619c404e68197eb6cbacd6f1
+PODFILE CHECKSUM: 3ea98bd23dad508e79f7abde0a7d704b9554c12f
 
 COCOAPODS: 1.11.3

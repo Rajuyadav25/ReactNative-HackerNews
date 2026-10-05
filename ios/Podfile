@@ -25,5 +25,52 @@ target 'HackerNews' do
 
   post_install do |installer|
     react_native_post_install(installer)
+
+    # Modern clang reports Yoga's `bool | bool` as -Wbitwise-instead-of-logical,
+    # which Yoga.podspec's -Werror makes fatal. Keep it a warning (no codegen change).
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'Yoga'
+      target.build_configurations.each do |config|
+        config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-error=bitwise-instead-of-logical'
+      end
+    end
+
+    # Pods integrated only for Debug (use_flipper!) must not be compiled or linked
+    # in Release. CocoaPods still integrates their transitive dependencies into
+    # Release, so take the closure: a pod is Debug-only when it is not a direct
+    # Release dependency and every pod depending on it is Debug-only.
+    aggregates = installer.aggregate_targets
+    pod_targets = aggregates.flat_map(&:pod_targets).uniq
+    release_pods = aggregates.flat_map { |t| t.pod_targets_for_build_configuration('Release') }.map(&:name).uniq
+    debug_only_pods = pod_targets.map(&:name) - release_pods
+    direct_release_pods = aggregates.flat_map do |t|
+      t.target_definition.dependencies.map(&:root_name).select { |name| t.target_definition.pod_whitelisted_for_configuration?(name, 'Release') }
+    end
+    dependents = Hash.new { |hash, key| hash[key] = [] }
+    pod_targets.each { |pt| pt.dependent_targets.each { |dep| dependents[dep.name] << pt.name } }
+    loop do
+      added = (release_pods - debug_only_pods - direct_release_pods).select do |name|
+        dependents[name].any? && (dependents[name] - debug_only_pods).empty?
+      end
+      break if added.empty?
+      debug_only_pods += added
+    end
+    Pod::UI.puts "Debug-only pods excluded from Release: #{debug_only_pods.sort.join(', ')}"
+
+    installer.pods_project.targets.each do |target|
+      next unless debug_only_pods.include?(target.name)
+      target.build_configurations.each do |config|
+        config.build_settings['EXCLUDED_SOURCE_FILE_NAMES'] = '*' if config.name == 'Release'
+      end
+    end
+    aggregates.each do |target|
+      path = target.xcconfig_path('Release')
+      xcconfig = File.read(path)
+      debug_only_pods.each do |name|
+        xcconfig = xcconfig.gsub(" -l\"#{name}\"", '')
+        xcconfig = xcconfig.gsub(" -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/#{name}/#{name}.modulemap\"", '')
+      end
+      File.write(path, xcconfig)
+    end
   end
 end
