@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hackernews"
+        applicationId "com.rajuyadav25.releasepipeline.hackernews"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
