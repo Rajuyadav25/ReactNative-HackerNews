@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import RenderHTML from 'react-native-render-html'
+import type { CSSPropertyNameList } from 'react-native-render-html'
 import { useItem } from './useItem'
 import { rootStyles } from './styles'
 
@@ -29,10 +30,10 @@ export const CommentView = ({ id }: { id: number }) => {
         setIsExpanded(!isExpanded)
       }}>
       <RenderHTML
-        ignoredStyles={ignoredStyles}
+        ignoredStyles={ignoredStyles as unknown as CSSPropertyNameList}
         key={comment.id}
         contentWidth={50}
-        source={source}
+        source={source as { html: string }}
         baseStyle={styles.html}
       />
       {comment.kids?.length && (

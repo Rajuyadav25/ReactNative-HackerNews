@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react'
-import {
-  FlatList,
-  RefreshControl,
-  StyleProp,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native'
+import { FlatList, StyleProp, StyleSheet, ViewStyle } from 'react-native'
 import { useQuery, useQueryClient } from 'react-query'
 import { rootStyles } from './styles'
 import { HeadlineView } from './HeadlineView'
