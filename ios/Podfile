@@ -36,6 +36,16 @@ target 'HackerNews' do
       end
     end
 
+    # Xcode 14+ code-signs resource bundle targets. CocoaPods >= 1.12 disables that
+    # ("Xcode 14.x throws an error about code signing on resource bundles"), but this
+    # repository pins CocoaPods 1.11.3, so apply the same setting here.
+    installer.pods_project.targets.each do |target|
+      next unless target.respond_to?(:product_type) && target.product_type == 'com.apple.product-type.bundle'
+      target.build_configurations.each do |config|
+        config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      end
+    end
+
     # Pods integrated only for Debug (use_flipper!) must not be compiled or linked
     # in Release. CocoaPods still integrates their transitive dependencies into
     # Release, so take the closure: a pod is Debug-only when it is not a direct
